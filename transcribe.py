@@ -45,7 +45,7 @@ def transcribe(mp3, mp4=""):
     
     transcript = json3.get("text")
     
-    print(transcript)
+    return transcript
 
 # extracts audio from mp4 and puts it into an mp3 file
 def convert_mp3(mp4, mp3):

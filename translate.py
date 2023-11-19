@@ -1,5 +1,9 @@
 from google.cloud import translate_v2 as translate
 
+from transcribe import transcribe
+
+# key = "AIzaSyAOaNH0gDwj1vyLWydgwma63UCoPt9ojhQ"
+
 def translate_text(target: str, text: str) -> dict:
     """Translates text into the target language.
 
@@ -21,3 +25,10 @@ def translate_text(target: str, text: str) -> dict:
     print("Detected source language: {}".format(result["detectedSourceLanguage"]))
 
     return result
+
+if __name__ == '__main__':
+    f = open("/Users/danieltsan/Downloads/databases.mp3", "w+")
+    script = transcribe("/Users/danieltsan/Downloads/databases.mp3", "/Users/danieltsan/Downloads/databases.mp4")
+
+    translate_text("es", script)
+    
