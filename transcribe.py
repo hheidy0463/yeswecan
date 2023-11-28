@@ -13,15 +13,24 @@ import requests
 #audio-editing library
 from pydub import AudioSegment
 # transcribe audio file    
-def transcribe(mp3, mp4=""):
-    if mp4 != "": 
-        convert_mp3(mp4, mp3)
+def transcribe(file):
+    if file[-3:] == "mp4": 
+        print("mp4 detected")
+        mp3 = file[:-3] + "mp3"
+        f = open(mp3, "w+")
+        convert_mp3(file, mp3)
+    elif file[-3:] == "mp3":
+        print("mp3 detected")
+    else:
+        print("invalid file format")
+        return
 
     # upload local file
     headers = {
         "authorization": "aa22022ab90d4f619444d01386317bcc",
     }
     response1 = requests.post('https://api.assemblyai.com/v2/upload', headers=headers, data=read_file(mp3))  
+    f.close()
     json1 = response1.json()
     url = json1.get("upload_url")
 
@@ -67,6 +76,5 @@ def read_file(filename, chunk_size=5242880):
             yield data
 
 if __name__ == '__main__':
-    f = open("/Users/danieltsan/Downloads/databases.mp3", "w+")
-    transcribe("/Users/danieltsan/Downloads/databases.mp3", "/Users/danieltsan/Downloads/databases.mp4")
+    print(transcribe("/Users/danieltsan/Downloads/databases.mp4"))
     

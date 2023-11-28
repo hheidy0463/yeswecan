@@ -27,8 +27,7 @@ def translate_text(target: str, text: str) -> dict:
     return result
 
 if __name__ == '__main__':
-    f = open("/Users/danieltsan/Downloads/databases.mp3", "w+")
-    script = transcribe("/Users/danieltsan/Downloads/databases.mp3", "/Users/danieltsan/Downloads/databases.mp4")
+    script = transcribe( "/Users/danieltsan/Downloads/databases.mp4")
 
     translate_text("es", script)
     
