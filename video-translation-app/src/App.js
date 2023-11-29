@@ -6,6 +6,9 @@ const App = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [transcript, setTranscript] = useState('');
+  const [className, setClassName] = useState('');
+  const [lectureTitle, setLectureTitle] = useState('');
+  const [selectedLecture, setSelectedLecture] = useState('');
 
   const handleFileDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -27,6 +30,33 @@ const App = () => {
     } catch (error) {
       console.error('Error uploading video:', error);
     }
+  };
+
+  const handleClassNameChange = (e) => {
+    setClassName(e.target.value);
+  };
+
+  const handleLectureTitleChange = (e) => {
+    setLectureTitle(e.target.value);
+  };
+
+  const handleLectureSelectChange = (e) => {
+    setSelectedLecture(e.target.value);
+  };
+
+  // Dummy function for demonstration. Replace with actual data retrieval logic.
+  const getStoredLectures = () => {
+    return [
+      
+    ];
+  };
+
+  const inputStyles = {
+    margin: '10px 0',
+    padding: '10px',
+    border: '1px solid #cccccc',
+    borderRadius: '4px',
+    width: '95%'
   };
 
   return (
@@ -55,7 +85,8 @@ const App = () => {
           Select Language:
           <select
             value={selectedLanguage}
-            onChange={(e) => setSelectedLanguage(e.target.value)}
+            onChange={handleClassNameChange}
+            style={inputStyles}
           >
             <option value="en">English</option>
             <option value="fr">French</option>
@@ -71,12 +102,43 @@ const App = () => {
         </label>
       </div>
       <div>
+        <h2>Class and Lecture Details</h2>
+        <input
+          type="text"
+          placeholder="Class Name"
+          value={className}
+          onChange={handleClassNameChange}
+          style={inputStyles}
+        />
+        <input
+          type="text"
+          placeholder="Lecture Title"
+          value={lectureTitle}
+          onChange={handleLectureTitleChange}
+          style={inputStyles}
+        />
+        <h3>Select Previous Lecture</h3>
+        <select
+          value={selectedLecture}
+          onChange={handleLectureSelectChange}
+          style={inputStyles}
+        >
+          <option value="">Select a Stored Lecture</option>
+          {getStoredLectures().map((lecture) => (
+            <option key={lecture.id} value={lecture.id}>
+              {lecture.title}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
         <h2>Translated Transcript</h2>
         <p>{transcript}</p>
       </div>
     </div>
   );
 };
+
 
 const dropzoneStyles = {
   border: '2px dashed #cccccc',
