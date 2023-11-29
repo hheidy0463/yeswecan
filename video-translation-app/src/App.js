@@ -16,12 +16,10 @@ const App = () => {
     // Implement video upload logic using a server and API
     // For simplicity, we'll assume a successful upload and get back a transcript
     try {
-      const videoFile = document.getElementById('fileInput').files[0];
-
-      const transcribeResponse = await axios.post('API_ENDPOINT', { videoFile });
+      const transcribeResponse = await axios.post('http://localhost:5000/transcribe', { videoFile }, { withCredentials: true });
       const transcription = transcribeResponse.data.transcription;
 
-      const tranlateRepsonse = await axios.post('API_ENDPOINT', { target: selectedLanguage, text: transcription})
+      const tranlateRepsonse = await axios.post('http://localhost:5000/translate', { target: selectedLanguage, text: transcription}, { withCredentials: true })
       const translation = tranlateRepsonse.data.translation;
 
       setTranscript(translation);
