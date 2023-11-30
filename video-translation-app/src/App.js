@@ -20,14 +20,14 @@ const App = () => {
       const formData = new FormData();
       formData.append('videoFile', videoFile);
 
-      const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { videoFile });
+      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', {videoFile});
+      const filepath = uploadResponse.data.filePath
+
+      const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
       const transcription = transcribeResponse.data.transcription;
 
       const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription})
       const translation = tranlateRepsonse.data.translation;
-
-      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', {videoFile});
-      const upload = uploadResponse.data.filePath
 
       setTranscript(translation);
       

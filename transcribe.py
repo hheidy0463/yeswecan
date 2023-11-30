@@ -10,10 +10,9 @@ from moviepy.editor import *
 # speech-to-text library
 import requests
 
-#audio-editing library
-from pydub import AudioSegment
 # transcribe audio file    
 def transcribe(file):
+    print("filepath", file)
     if file[-3:] == "mp4": 
         print("mp4 detected")
         mp3 = file[:-3] + "mp3"
