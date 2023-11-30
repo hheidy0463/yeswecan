@@ -18,17 +18,25 @@ const App = () => {
   const handleUpload = async () => {
     try { // dont' use withAuthentication, also use 127.0.0.1 instead of localhost
       const formData = new FormData();
+
       formData.append('videoFile', videoFile);
+      formData.append('selectedLanguage', selectedLanguage);
+      formData.append('className', className);
+      formData.append('lectureTitle', lectureTitle);
 
       const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', { videoFile });
       const filepath = uploadResponse.data.filePath
 
-      const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
-      const transcription = transcribeResponse.data.transcription;
+      //const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
+      //const transcription = transcribeResponse.data.transcription;
 
-      const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription })
-      const translation = tranlateRepsonse.data.translation;
+      //const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription })
+      //const translation = tranlateRepsonse.data.translation;
 
+      const transcription = "hello"
+      const translation = "hola"
+      const dbResponse = await axios.post('http://127.0.0.1:5000/create_lecture', { transcript: transcription, translation: translation})
+      
       setTranscript(translation);
 
     } catch (error) {
