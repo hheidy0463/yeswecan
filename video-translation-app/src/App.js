@@ -20,17 +20,17 @@ const App = () => {
       const formData = new FormData();
       formData.append('videoFile', videoFile);
 
-      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', {videoFile});
+      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', { videoFile });
       const filepath = uploadResponse.data.filePath
 
       const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
       const transcription = transcribeResponse.data.transcription;
 
-      const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription})
+      const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription })
       const translation = tranlateRepsonse.data.translation;
 
       setTranscript(translation);
-      
+
     } catch (error) {
       console.error('Error uploading video:', error);
     }
@@ -51,7 +51,7 @@ const App = () => {
   // Dummy function for demonstration. Replace with actual data retrieval logic.
   const getStoredLectures = () => {
     return [
-      
+
     ];
   };
 
@@ -66,45 +66,7 @@ const App = () => {
   return (
     <div>
       <h1>Video Translation App</h1>
-      <div>
-        <h2>Upload Video</h2>
-        <Dropzone onDrop={handleFileDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()} style={dropzoneStyles}>
-              <input {...getInputProps()} />
-              <p>Drag and drop a video file here, or click to select one</p>
-            </div>
-          )}
-        </Dropzone>
-        {videoFile && (
-          <div>
-            <p>Selected Video: {videoFile.name}</p>
-            <button onClick={handleUpload}>Upload</button>
-          </div>
-        )}
-      </div>
-      <div>
-        <h2>Choose Translation</h2>
-        <label>
-          Select Language:
-          <select
-            value={selectedLanguage}
-            onChange={handleClassNameChange}
-            style={inputStyles}
-          >
-            <option value="en">English</option>
-            <option value="fr">French</option>
-            <option value="es">Spanish</option>
-            <option value="zh">Mandarin</option>
-            <option value="ar">Arabic</option>
-            <option value="de">German</option>
-            <option value="ru">Russian</option>
-            <option value="ja">Japanese</option>
-            <option value="pt">Portuguese</option>
-            <option value="hi">Hindi</option>
-          </select>
-        </label>
-      </div>
+
       <div>
         <h2>Class and Lecture Details</h2>
         <input
@@ -135,21 +97,64 @@ const App = () => {
           ))}
         </select>
       </div>
+
+      <div>
+        <h2>Upload Video</h2>
+        <Dropzone onDrop={handleFileDrop}>
+          {({ getRootProps, getInputProps }) => (
+            <div {...getRootProps()} style={dropzoneStyles}>
+              <input {...getInputProps()} />
+              <p>Drag and drop a video file here, or click to select one</p>
+            </div>
+          )}
+        </Dropzone>
+        {videoFile && (
+          <div>
+            <p>Selected Video: {videoFile.name}</p>
+            <button onClick={handleUpload}>Upload</button>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <h2>Choose Translation</h2>
+        <label>
+          Select Language:
+          <select
+            value={selectedLanguage}
+            onChange={handleClassNameChange}
+            style={inputStyles}
+          >
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <option value="zh">Mandarin</option>
+            <option value="ar">Arabic</option>
+            <option value="de">German</option>
+            <option value="ru">Russian</option>
+            <option value="ja">Japanese</option>
+            <option value="pt">Portuguese</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </label>
+      </div>
+
       <div>
         <h2>Translated Transcript</h2>
         <p>{transcript}</p>
       </div>
     </div>
   );
-};
+        };
 
 
-const dropzoneStyles = {
-  border: '2px dashed #cccccc',
-  borderRadius: '4px',
-  padding: '20px',
-  textAlign: 'center',
-  cursor: 'pointer',
-};
 
-export default App;
+  const dropzoneStyles = {
+    border: '2px dashed #cccccc',
+    borderRadius: '4px',
+    padding: '20px',
+    textAlign: 'center',
+    cursor: 'pointer',
+  };
+
+  export default App;
