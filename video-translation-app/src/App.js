@@ -145,16 +145,16 @@ const App = () => {
       </div>
     </div>
   );
-        };
+};
 
 
 
-  const dropzoneStyles = {
-    border: '2px dashed #cccccc',
-    borderRadius: '4px',
-    padding: '20px',
-    textAlign: 'center',
-    cursor: 'pointer',
-  };
+const dropzoneStyles = {
+  border: '2px dashed #cccccc',
+  borderRadius: '4px',
+  padding: '20px',
+  textAlign: 'center',
+  cursor: 'pointer',
+};
 
-  export default App;
+export default App;
