@@ -1,20 +1,16 @@
 
 # api.py
-<<<<<<< HEAD
-from flask import Flask, flash, request, jsonify, redirect, url_for, Response, render_template
-=======
-from flask import Flask, request, jsonify, redirect, url_for, Response
->>>>>>> edbd811 (made separate button for translation:)
+from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS, cross_origin
 from transcribe import transcribe
 from translate import translate_text
 from database import firebase
 
-from werkzeug.utils import secure_filename
 import os
 import sys
 
 app = Flask(__name__)
+
 CORS(app, origins='*')
 app.config['videoUploads'] = 'videos/'
 os.makedirs(app.config['videoUploads'], exist_ok=True)
@@ -31,17 +27,16 @@ def upload_file():
     if 'videoFile' not in request.files:
         return redirect(request.url)
 
-    uploaded_file = request.files['videoFile']
+    uploaded_file = request.files.get('videoFile')
 
     if uploaded_file.filename == '':
         return redirect(request.url)
     
     if uploaded_file:
-        filename = secure_filename(uploaded_file.filename)
-        file_path = os.path.join(app.config['videoUploads'], filename)
+        file_path = os.path.join(app.config['videoUploads'], uploaded_file.filename)
         uploaded_file.save(file_path)
 
-    return jsonify({'filePath': url_for('download_file', name=filename)})
+    return jsonify({'filePath': file_path})
 
 # route should match what your frontend calls it
 # POST should also have OPTIONS 
