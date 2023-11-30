@@ -6,6 +6,7 @@ const App = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [transcript, setTranscript] = useState('');
+  const [translation, setTranslation] = useState('');
   const [className, setClassName] = useState('');
   const [lectureTitle, setLectureTitle] = useState('');
   const [selectedLecture, setSelectedLecture] = useState('');
@@ -30,17 +31,36 @@ const App = () => {
       const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
       const transcription = transcribeResponse.data.transcription;
 
-      const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription })
+      const dbResponse = await axios.post('http://127.0.0.1:5000/create_lecture', {className: className, lectureTitle: lectureTitle, transcript: transcription})
+      
+      setTranscript(transcription);
+
+    } catch (error) {
+      console.error('Error uploading video:', error);
+    }
+  };
+
+  const handleTranslate = async () => {
+    try { // dont' use withAuthentication, also use 127.0.0.1 instead of localhost
+      const formData = new FormData();
+
+      formData.append('videoFile', videoFile);
+      formData.append('selectedLanguage', selectedLanguage);
+      formData.append('className', className);
+      formData.append('lectureTitle', lectureTitle);
+      formData.append('transcript', transcript);
+
+      const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcript })
       const translation = tranlateRepsonse.data.translation;
 
-      const dbResponse = await axios.post('http://127.0.0.1:5000/create_lecture', { transcript: transcription, translation: translation})
+      const dbResponse = await axios.post('http://127.0.0.1:5000/update_lecture', { className: className, lectureTitle: lectureTitle, selectedLanguage: selectedLanguage, translation: translation})
       
       setTranscript(translation);
 
     } catch (error) {
       console.error('Error uploading video:', error);
     }
-  };
+  }
 
   const handleClassNameChange = (e) => {
     setClassName(e.target.value);
@@ -147,11 +167,13 @@ const App = () => {
             <option value="hi">Hindi</option>
           </select>
         </label>
+        <div>
+            <button onClick={handleTranslate}>Translate</button>
+          </div>
       </div>
-
       <div>
         <h2>Translated Transcript</h2>
-        <p>{transcript}</p>
+        <p>{translation}</p>
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
 
 # api.py
+<<<<<<< HEAD
 from flask import Flask, flash, request, jsonify, redirect, url_for, Response, render_template
+=======
+from flask import Flask, request, jsonify, redirect, url_for, Response
+>>>>>>> edbd811 (made separate button for translation:)
 from flask_cors import CORS, cross_origin
 from transcribe import transcribe
 from translate import translate_text
@@ -25,19 +29,16 @@ def main():
 @cross_origin()
 def upload_file():
     if 'videoFile' not in request.files:
-        flash("no file part")
         return redirect(request.url)
 
     uploaded_file = request.files['videoFile']
 
     if uploaded_file.filename == '':
-        flash('No selected file')
         return redirect(request.url)
     
     if uploaded_file:
         filename = secure_filename(uploaded_file.filename)
         file_path = os.path.join(app.config['videoUploads'], filename)
-        flash(f"File path: {file_path}")
         uploaded_file.save(file_path)
 
     return jsonify({'filePath': url_for('download_file', name=filename)})
@@ -66,12 +67,22 @@ def translate_endpoint():
 def create_lecture_endpoint():
     firestore_client = firebase.Firebase()
     data = request.get_json()
-    className = request.files["className"]
-    data["language"] = request.files["selectedLanguage"]
-    title = request.files["lectureTitle"]
-    
+    className = data["className"]
+    title = data["lectureTitle"]
+    data = {"original transcript": data["transcript"]}
     firestore_client.create_lecture(className, title, data)
-    return 'database update complete'
+    return 'created lecture'
+
+@app.route('/update_lecture', methods=['POST', 'OPTIONS'])
+@cross_origin()
+def update_lecture_endpoint():
+    firestore_client = firebase.Firebase()
+    data = request.get_json()
+    className = data["className"]
+    title = data["lectureTitle"]
+    data = {data["selectedLanguage"]: data["translation"]}
+    firestore_client.create_lecture(className, title, data)
+    return 'updated lecture'
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
