@@ -16,10 +16,15 @@ class Firebase:
             return document_data
         else:
             raise NameError("The document doesn't exist.")
+
+    def create_lecture(self, class_name, lecture_title, data):
+        """Creates a lecture document in Firestore with transcript data."""
+        lec_ref = self.db.collection(class_name).document(lecture_title)
+        lec_ref.set(dict(data), merge=True)
         
-    def write_data_to_collection(self, collection_name, document_name, data):
-        doc_ref = self.db.collection(collection_name).document(document_name)
-        doc_ref.set(dict(data), merge=True)
 
 if __name__ == "__main__":
-    firestore_client= Firebase()
+    firestore_client = Firebase()
+    # data = {"professor": "DeNero", "transcript": ""}
+    # firestore_client.create_lecture("CS 61A", "Databases", data)
+    
