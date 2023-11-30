@@ -21,6 +21,7 @@ class Firebase:
         """Creates a lecture document in Firestore with transcript data."""
         lec_ref = self.db.collection(class_name).document(lecture_title)
         lec_ref.set(dict(data), merge=True)
+
         
 
 if __name__ == "__main__":
