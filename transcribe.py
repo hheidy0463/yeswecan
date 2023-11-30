@@ -1,5 +1,6 @@
 from os import path
 import time
+import sys
 
 # regex
 import re
@@ -12,16 +13,16 @@ import requests
 
 # transcribe audio file    
 def transcribe(file):
-    print("filepath", file)
+    print("filepath " + type(file), file=sys.stdout)
     if file[-3:] == "mp4": 
-        print("mp4 detected")
+        print("mp4 detected", file=sys.stdout)
         mp3 = file[:-3] + "mp3"
         f = open(mp3, "w+")
         convert_mp3(file, mp3)
     elif file[-3:] == "mp3":
-        print("mp3 detected")
+        print("mp3 detected", file=sys.stdout)
     else:
-        print("invalid file format")
+        print("invalid file format", file=sys.stderr)
         return
 
     # upload local file
