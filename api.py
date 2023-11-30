@@ -1,18 +1,19 @@
 
 # api.py
-from flask import Flask, request, jsonify, redirect, url_for, Response
+from flask import Flask, flash, request, jsonify, redirect, url_for, Response
 from flask_cors import CORS, cross_origin
 from transcribe import transcribe
 from translate import translate_text
 from werkzeug.utils import secure_filename
 import os
+import sys
 
 app = Flask(__name__)
 CORS(app, origins='*')
-app.config['videoUploads'] = 'uplaods'
+app.config['videoUploads'] = 'videos'
 os.makedirs(app.config['videoUploads'], exist_ok=True)
 
-@app.route('/upload', methods=['POST', 'OPTIONS'])
+@app.route('/upload', methods=['POST'])
 @cross_origin()
 def upload_file():
     if 'videoFile' not in request.files:
@@ -26,22 +27,22 @@ def upload_file():
     if uploaded_file:
         filename = secure_filename(uploaded_file.filename)
         file_path = os.path.join(app.root_path, app.config['videoUploads'], filename)
-        print(f"File path: {file_path}")
+        print(f"File path: {file_path}", file=sys.stdout)
         uploaded_file.save(file_path)
 
     return jsonify({'filePath': file_path})
 
 # route should match what your frontend calls it
 # POST should also have OPTIONS 
-@app.route('/transcribe', methods=['POST', 'OPTIONS'])
+@app.route('/transcribe', methods=['POST'])
 @cross_origin()
 def transcribe_endpoint():
     data = request.get_json()
     video_file = data.get('videoFile')
-    result = transcribe(video_file)
+    result = transcribe("videos/" + video_file)
     return jsonify({'transcription': result})
 
-@app.route('/translate', methods=['POST', 'OPTIONS'])
+@app.route('/translate', methods=['POST'])
 @cross_origin()
 def translate_endpoint():
     data = request.get_json()
