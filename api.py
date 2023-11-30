@@ -1,6 +1,6 @@
 
 # api.py
-from flask import Flask, flash, request, jsonify, redirect, url_for, Response
+from flask import Flask, flash, request, jsonify, redirect, url_for, Response, render_template
 from flask_cors import CORS, cross_origin
 from transcribe import transcribe
 from translate import translate_text
@@ -14,6 +14,12 @@ app = Flask(__name__)
 CORS(app, origins='*')
 app.config['videoUploads'] = 'videos/'
 os.makedirs(app.config['videoUploads'], exist_ok=True)
+
+"""
+@app.route('/')
+def main():
+    return render_template('src/home.html')
+"""
 
 @app.route('/upload', methods=['POST'])
 @cross_origin()
@@ -68,4 +74,4 @@ def create_lecture_endpoint():
     return 'database update complete'
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='localhost', port=5000)
