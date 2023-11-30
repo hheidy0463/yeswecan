@@ -44,7 +44,7 @@ def upload_file():
 @cross_origin()
 def transcribe_endpoint():
     data = request.get_json()
-    video_file = data.get('videoFile')
+    video_file = data.get('filepath')
     result = transcribe("videos/" + video_file)
     return jsonify({'transcription': result})
 

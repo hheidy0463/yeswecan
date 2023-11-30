@@ -25,11 +25,11 @@ const App = () => {
       formData.append('className', className);
       formData.append('lectureTitle', lectureTitle);
 
-      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', { videoFile });
+      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', { videoFile : videoFile });
       const filepath = uploadResponse.data.filePath
 
-      const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
-      const transcription = "hello"
+      const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath : filepath});
+      const transcription = transcribeResponse.data.transcription
 
       const dbResponse = await axios.post('http://127.0.0.1:5000/create_lecture', {className: className, lectureTitle: lectureTitle, transcript: transcription})
       
