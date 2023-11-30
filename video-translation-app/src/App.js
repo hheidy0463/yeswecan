@@ -29,7 +29,7 @@ const App = () => {
       const filepath = uploadResponse.data.filePath
 
       const transcribeResponse = await axios.post('http://127.0.0.1:5000/transcribe', { filepath });
-      const transcription = transcribeResponse.data.transcription;
+      const transcription = "hello"
 
       const dbResponse = await axios.post('http://127.0.0.1:5000/create_lecture', {className: className, lectureTitle: lectureTitle, transcript: transcription})
       

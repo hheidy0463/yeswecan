@@ -13,16 +13,15 @@ import requests
 
 # transcribe audio file    
 def transcribe(file):
-    print("filepath " + type(file), file=sys.stdout)
     if file[-3:] == "mp4": 
-        print("mp4 detected", file=sys.stdout)
+        print("mp4 detected")
         mp3 = file[:-3] + "mp3"
         f = open(mp3, "w+")
         convert_mp3(file, mp3)
     elif file[-3:] == "mp3":
-        print("mp3 detected", file=sys.stdout)
+        print("mp3 detected")
     else:
-        print("invalid file format", file=sys.stderr)
+        print("invalid file format")
         return
 
     # upload local file

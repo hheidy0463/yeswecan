@@ -19,6 +19,9 @@ class Firebase:
 
     def create_lecture(self, class_name, lecture_title, data):
         """Creates a lecture document in Firestore with transcript data."""
+        print("Class Name:", class_name)
+        print("Lecture Title:", lecture_title)
+        print("data:", data)
         lec_ref = self.db.collection(class_name).document(lecture_title)
         lec_ref.set(dict(data), merge=True)
 
@@ -26,6 +29,6 @@ class Firebase:
 
 if __name__ == "__main__":
     firestore_client = Firebase()
-    # data = {"professor": "DeNero", "transcript": ""}
-    # firestore_client.create_lecture("CS 61A", "Databases", data)
+    data = {"transcript": "", "es": ""}
+    firestore_client.create_lecture("CS 61A", "Lists", data)
     
