@@ -26,6 +26,9 @@ const App = () => {
       const tranlateRepsonse = await axios.post('http://127.0.0.1:5000/translate', { target: selectedLanguage, text: transcription})
       const translation = tranlateRepsonse.data.translation;
 
+      const uploadResponse = await axios.post('http://127.0.0.1:5000/upload', {videoFile});
+      const upload = uploadResponse.data.filePath
+
       setTranscript(translation);
       
     } catch (error) {

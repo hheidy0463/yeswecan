@@ -12,7 +12,7 @@ CORS(app, origins='*')
 app.config['videoUploads'] = 'uplaods'
 os.makedirs(app.config['videoUploads'], exist_ok=True)
 
-@app.route('/', methods=['POST', 'OPTIONS'])
+@app.route('/upload', methods=['POST', 'OPTIONS'])
 @cross_origin()
 def upload_file():
     if 'videoFile' not in request.files:
@@ -29,7 +29,7 @@ def upload_file():
         print(f"File path: {file_path}")
         uploaded_file.save(file_path)
 
-    return redirect(url_for('index'))
+    return jsonify({'filePath': file_path})
 
 # route should match what your frontend calls it
 # POST should also have OPTIONS 
